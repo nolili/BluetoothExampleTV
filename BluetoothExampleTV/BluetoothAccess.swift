@@ -91,6 +91,18 @@ class BluetoothManager :NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         peripheral.discoverServices([HeartRateService.UUID])
     }
     
+    func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+        self.connectingPeripheral?.delegate = nil
+        self.connectingPeripheral = nil
+        self.startScan()
+    }
+    
+    func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+        self.connectingPeripheral?.delegate = nil
+        self.connectingPeripheral = nil
+        self.startScan()
+    }
+    
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
         
         peripheral.services?.forEach{ service in
